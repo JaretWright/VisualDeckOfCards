@@ -4,18 +4,51 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Card {
-    //instance variables typically go after the class defintion
-    private String suit, faceName;
+    private String faceName, suit;
     private Image image;
 
-    /**
-     * This constructor is used to create the Card object in the
-     * system and will intialize the instance variable values
-     */
-    public Card(String suit, String faceName) {
-        setSuit(suit);
+    public Card(String faceName, String suit) {
         setFaceName(faceName);
-        image = new Image("./images/"+getFaceName()+"_of_"+getSuit()+".png");
+        setSuit(suit);
+        String fileName = faceName + "_of_"+suit+".png";
+        image = new Image("./images/"+fileName);
+    }
+
+    public String getFaceName() {
+        return faceName;
+    }
+
+    /**
+     * This method returns a list of face names that are valid for
+     * Card objects
+     */
+    public static List<String> getValidFaceNames()
+    {
+        return Arrays.asList("2","3","4","5","6","7","8","9","10","jack",
+                            "queen","king","ace");
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    /**
+     * This method will validate the argument and set the instance variable
+     * @param faceName 2,3,4,5,6,7,8,9,10,jack,queen,king
+     */
+    public void setFaceName(String faceName) {
+        List<String> validFaceNames = getValidFaceNames();
+        faceName = faceName.toLowerCase();
+
+        if (validFaceNames.contains(faceName))
+            this.faceName = faceName;
+        else
+            throw new IllegalArgumentException("Valid face names are: "+
+                            validFaceNames);
     }
 
     public String getSuit() {
@@ -24,79 +57,25 @@ public class Card {
 
     /**
      * This method will return a list of valid suits
+     * @return spades, hearts, clubs, diamonds
      */
-    public static List<String> getListOfSuits()
+    public static List<String> getValidSuits()
     {
-        return Arrays.asList("hearts","diamonds","clubs","spades");
+        return Arrays.asList("hearts","diamonds","spades","clubs");
     }
 
-    /**
-     * This method will validate the argument is a valid suit and set the instance
-     * variable
-     * @param suit hearts, diamonds, clubs or spades
-     */
     public void setSuit(String suit) {
-        List<String> validSuits = getListOfSuits();
+        List<String> validSuits = getValidSuits();
         suit = suit.toLowerCase();
 
         if (validSuits.contains(suit))
             this.suit = suit;
         else
-            throw new IllegalArgumentException("valid suits are: " + validSuits);
+            throw new IllegalArgumentException("valid suits are: "+ validSuits);
     }
 
-    public String getFaceName() {
-        return faceName;
-    }
-
-    /**
-     * This method will return a list of valid face names
-     * @return 2,3,4,5,6,7,8,9,10,jack,queen,king,ace
-     */
-    public static List<String> getListOfFaceNames()
-    {
-        return Arrays.asList("2","3","4","5","6","7","8","9","10","jack","queen",
-                    "king","ace");
-    }
-
-    /**
-     * This method will return the value of the card
-     */
-    public int getFaceValue()
-    {
-        return getListOfFaceNames().indexOf(faceName)+2;
-    }
-
-    /**
-     * This method will return a Card in the form of a String matching the pattern
-     * faceName of suit
-     */
     public String toString()
     {
         return String.format("%s of %s", faceName, suit);
-    }
-
-    /**
-     * This will validate the argument is a valid face name and set the instance
-     * variable
-     * @param faceName 2,3,4,5,6,7,8,9,10,jack,queen,king,ace
-     */
-    public void setFaceName(String faceName) {
-        List<String> validNames = getListOfFaceNames();
-        faceName = faceName.toLowerCase();
-
-        if (validNames.contains(faceName))
-            this.faceName = faceName;
-        else
-            throw new IllegalArgumentException("valid face names are: "+ validNames);
-    }
-
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
     }
 }
